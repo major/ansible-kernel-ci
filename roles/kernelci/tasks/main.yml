@@ -22,3 +22,5 @@
   make:
     target: tarxz-pkg
     chdir: kernel/
+    params:
+      MAKEFLAGS: "-j{{ ansible_processor_vcpus }}"
