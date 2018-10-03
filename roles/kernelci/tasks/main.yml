@@ -14,13 +14,7 @@
     dest: kernel/.config
 
 - name: Update the kernel config with any missing defaults
-  make:
-    target: olddefconfig
-    chdir: kernel/
+  command: make -C kernel/ olddefconfig
 
 - name: Compile the kernel
-  make:
-    target: tarxz-pkg
-    chdir: kernel/
-    params:
-      MAKEFLAGS: "-j{{ ansible_processor_vcpus }}"
+  command: "make -j{{ ansible_processor_vcpus }} -C kernel/ tarxz-pkg"
