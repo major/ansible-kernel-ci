@@ -15,6 +15,16 @@
 
 - name: Update the kernel config with any missing defaults
   command: make -C kernel/ olddefconfig
+  register: update_config
+
+- name: Print stderr from config update
+  debug:
+    var: update_config.stderr
 
 - name: Compile the kernel
   command: "make -j{{ ansible_processor_vcpus }} -C kernel/ tarxz-pkg"
+  register: kernel_compile
+
+- name: Print stderr from kernel build
+  debug:
+    var: kernel_compile.stderr
