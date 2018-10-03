@@ -1,0 +1,24 @@
+---
+
+- name: Clone the kernel tree
+  git:
+    repo: "{{ kernel_repo }}"
+    dest: kernel/
+    version: master
+    clone: yes
+    depth: 5
+
+- name: Retrieve the latest Fedora kernel config file
+  get_url:
+    url: https://src.fedoraproject.org/cgit/rpms/kernel.git/plain/kernel-x86_64.config
+    dest: kernel/.config
+
+- name: Update the kernel config with any missing defaults
+  make:
+    target: olddefconfig
+    chdir: kernel/
+
+- name: Compile the kernel
+  make:
+    target: tarxz-pkg
+    chdir: kernel/

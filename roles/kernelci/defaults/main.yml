@@ -1,0 +1,12 @@
+---
+
+kernel_name: net-next
+kernel_repo: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
+kernel_arches:
+  # - aarch64
+  # - ppc64le
+  # - s390x
+  - x86_64
+
+patchwork_server: https://patchwork.ozlabs.org
+patchwork_project: netdev
