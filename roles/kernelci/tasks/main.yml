@@ -24,6 +24,9 @@
 - name: Compile the kernel
   command: "make -j{{ ansible_processor_vcpus }} -C kernel/ tarxz-pkg"
   register: kernel_compile
+  environment:
+    CCACHE_DIR: /opt/ccache/
+    PATH: "/usr/lib64/ccache:{{ ansible_env.PATH }}"
 
 - name: Print stderr from kernel build
   debug:
