@@ -29,6 +29,11 @@
   debug:
     var: update_config.stderr
 
+- name: Set ccache configuration
+  command: "ccache -o compression=true -o hash_dir=false -o max_size=5.0G"
+  environment:
+    CCACHE_DIR: /opt/ccache/
+
 - name: Get ccache stats
   command: ccache -s
   register: ccache_before_stats
