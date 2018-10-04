@@ -29,7 +29,8 @@
 
     - name: Apply each patch series to the kernel repository
       command: "git am series.{{ item }}.patch"
-      chdir: "kernel/"
+      args:
+        chdir: "kernel/"
       with_items: "{{ patchwork_series }}"
       register: series_apply
 
