@@ -1,5 +1,7 @@
 ---
 
+ccache_root_path: /opt/ccache
+
 kernel_name: net-next
 kernel_repo: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
 kernel_build_target: 'targz-pkg'
@@ -11,3 +13,5 @@ kernel_arches:
 
 patchwork_server: https://patchwork.ozlabs.org
 patchwork_project: netdev
+patchwork_series:
+  - 69031

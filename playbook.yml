@@ -1,5 +1,71 @@
 ---
 
 - hosts: localhost
-  roles:
-    - kernelci
+  vars_files:
+    - defaults.yml
+    - variables.yml
+  tasks:
+    - name: Clone the kernel tree
+      git:
+        repo: "{{ kernel_repo }}"
+        dest: kernel/
+        version: master
+        clone: yes
+        depth: 5
+      retries: 3
+      delay: 5
+      register: result
+      until: result is success
+
+    - name: Retrieve all patch series from patchwork
+      get_url:
+        url: "{{ patchwork_server }}/series/{{ item }}/mbox/"
+        dest: "kernel/series.{{ item }}.patch"
+      with_items: "{{ patchwork_series }}"
+      retries: 3
+      delay: 5
+      register: result
+      until: result is success
+
+    - name: Apply each patch series to the kernel repository
+      command: "git am series.{{ item }}.patch"
+      chdir: "kernel/"
+      with_items: "{{ patchwork_series }}"
+      register: series_apply
+
+    - name: Print any stderr from patching
+      debug:
+        var: series_apply.stderr_lines
+
+    - name: Retrieve the latest Fedora kernel config file
+      get_url:
+        url: https://src.fedoraproject.org/cgit/rpms/kernel.git/plain/kernel-x86_64.config
+        dest: kernel/.config
+      retries: 3
+      delay: 5
+      register: result
+      until: result is success
+
+    - name: Update the kernel config with any missing defaults
+      command: make -C kernel/ olddefconfig
+      register: update_config
+
+    - name: Print stderr from config update
+      debug:
+        var: update_config.stderr_lines
+
+    - name: Set ccache configuration
+      command: "ccache -o compression=true -o hash_dir=false -o max_size=5.0G"
+      environment:
+        CCACHE_DIR: /opt/ccache/
+
+    - name: Compile the kernel
+      command: "make -j{{ ansible_processor_vcpus }} -C kernel/ {{ kernel_build_target }}"
+      register: kernel_compile
+      environment:
+        CCACHE_DIR: /opt/ccache/
+        PATH: "/usr/lib64/ccache:{{ ansible_env.PATH }}"
+
+    - name: Print stderr from kernel build
+      debug:
+        var: kernel_compile.stderr_lines
