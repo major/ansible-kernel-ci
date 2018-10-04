@@ -10,7 +10,7 @@
   retries: 3
   delay: 5
   register: result
-  until: result | success
+  until: result is success
 
 - name: Retrieve the latest Fedora kernel config file
   get_url:
@@ -19,7 +19,7 @@
   retries: 3
   delay: 5
   register: result
-  until: result | success
+  until: result is success
 
 - name: Update the kernel config with any missing defaults
   command: make -C kernel/ olddefconfig
