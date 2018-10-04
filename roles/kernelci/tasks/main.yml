@@ -40,7 +40,7 @@
     var: ccache_before_stats.stdout
 
 - name: Compile the kernel
-  command: "make -j{{ ansible_processor_vcpus }} -C kernel/ tarxz-pkg"
+  command: "make -j{{ ansible_processor_vcpus }} -C kernel/ targz-pkg"
   register: kernel_compile
   environment:
     CCACHE_DIR: /opt/ccache/
