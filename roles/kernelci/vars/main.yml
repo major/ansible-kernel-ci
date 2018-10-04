@@ -1,0 +1,12 @@
+---
+
+cross_arch_map:
+  aarch64:
+    compiler: aarch64-linux-gnu-
+    kernel_arch: arm64
+  ppc64le:
+    compiler: powerpc64le-linux-gnu-
+    kernel_arch: powerpc
+  s390x:
+    compiler: s390x-linux-gnu-
+    kernel_arch: s390

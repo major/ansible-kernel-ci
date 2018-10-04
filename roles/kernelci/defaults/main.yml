@@ -2,10 +2,11 @@
 
 kernel_name: net-next
 kernel_repo: https://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next.git
+kernel_build_target: 'targz-pkg'
 kernel_arches:
-  # - aarch64
-  # - ppc64le
-  # - s390x
+  - aarch64
+  - ppc64le
+  - s390x
   - x86_64
 
 patchwork_server: https://patchwork.ozlabs.org
