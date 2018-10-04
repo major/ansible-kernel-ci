@@ -21,6 +21,16 @@
   debug:
     var: update_config.stderr
 
+- name: Get ccache stats
+  command: ccache -s
+  register: ccache_before_stats
+  environments:
+    CCACHE_DIR: /opt/ccache/
+
+- name: Print ccache stats
+  debug:
+    var: ccache_before_stats.stdout
+
 - name: Compile the kernel
   command: "make -j{{ ansible_processor_vcpus }} -C kernel/ tarxz-pkg"
   register: kernel_compile
@@ -31,3 +41,13 @@
 - name: Print stderr from kernel build
   debug:
     var: kernel_compile.stderr
+
+- name: Get ccache stats
+  command: ccache -s
+  register: ccache_after_stats
+  environments:
+    CCACHE_DIR: /opt/ccache/
+
+- name: Print ccache stats
+  debug:
+    var: ccache_after_stats.stdout
