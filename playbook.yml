@@ -17,6 +17,18 @@
       register: result
       until: result is success
 
+    - name: Set basic user information for the git repo
+      git_config:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        scope: local
+        repo: kernel/
+      with_items:
+        - name: user.name
+          value: "Nobody"
+        - name: user.email
+          value: "nobody@example.com"
+
     - name: Retrieve all patch series from patchwork
       get_url:
         url: "{{ patchwork_server }}/series/{{ item }}/mbox/"
