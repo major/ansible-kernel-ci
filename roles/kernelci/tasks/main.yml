@@ -32,7 +32,7 @@
 - name: Get ccache stats
   command: ccache -s
   register: ccache_before_stats
-  environments:
+  environment:
     CCACHE_DIR: /opt/ccache/
 
 - name: Print ccache stats
@@ -53,7 +53,7 @@
 - name: Get ccache stats
   command: ccache -s
   register: ccache_after_stats
-  environments:
+  environment:
     CCACHE_DIR: /opt/ccache/
 
 - name: Print ccache stats
