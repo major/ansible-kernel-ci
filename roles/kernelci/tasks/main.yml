@@ -7,11 +7,19 @@
     version: master
     clone: yes
     depth: 5
+  retries: 3
+  delay: 5
+  register: result
+  until: result | success
 
 - name: Retrieve the latest Fedora kernel config file
   get_url:
     url: https://src.fedoraproject.org/cgit/rpms/kernel.git/plain/kernel-x86_64.config
     dest: kernel/.config
+  retries: 3
+  delay: 5
+  register: result
+  until: result | success
 
 - name: Update the kernel config with any missing defaults
   command: make -C kernel/ olddefconfig
